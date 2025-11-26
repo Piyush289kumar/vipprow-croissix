@@ -6,12 +6,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
-    ActivityIndicator,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 
 export default function Register() {
@@ -30,14 +30,13 @@ export default function Register() {
   const [error, setError] = useState("");
 
   const onRegister = () => {
-    // Clear previous toast messages
-    if (password !== confirmPassword) {
-      toast.show("Passwords do not match", "error");
+    if (!name || !email || !password || !confirmPassword) {
+      toast.error("All fields are required");
       return;
     }
 
-    if (!name || !email || !password) {
-      toast.show("All fields are required", "error");
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -47,10 +46,10 @@ export default function Register() {
         onError: (error: any) => {
           const msg =
             error?.response?.data?.message || "Registration failed. Try again.";
-          toast.show(msg, "error");
+          toast.error(msg);
         },
         onSuccess: () => {
-          toast.show("Account created successfully!", "success");
+          toast.success("Account created successfully!");
           router.push("/(auth)/login");
         },
       }

@@ -1,4 +1,5 @@
 // app/(auth)/login.tsx
+
 import { useLogin } from "@/hooks/useAuth";
 import { saveToken } from "@/services/storage.service";
 import { setAuth } from "@/store/slices/auth.slice";
@@ -34,22 +35,19 @@ export default function Login() {
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const onLogin = () => {
-    if (emailError || passwordError) {
-      toast.show("Please fix input errors", "error");
-      return;
-    }
+    if (!email || !password) return toast.error("All fields are required");
+
+    if (emailError || passwordError)
+      return toast.error("Please fix input errors");
 
     loginMutation.mutate(
       { email, password },
       {
-        onError: (err: any) => {
-          const msg = err?.response?.data?.message || "Login failed";
-          toast.show(msg, "error");
-        },
-        onSuccess: async (res) => {
-          toast.show("Login successful", "success");
-          const { token, user } = res;
+        onError: (err: any) =>
+          toast.error(err?.response?.data?.message || "Login failed"),
 
+        onSuccess: async ({ token, user }) => {
+          toast.success("Logged in successfully!");
           dispatch(setAuth({ user, token }));
           await saveToken(token);
           router.replace("/(tabs)");
