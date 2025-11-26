@@ -1,5 +1,4 @@
 // app/(auth)/login.tsx
-
 import { useLogin } from "@/hooks/useAuth";
 import { saveToken } from "@/services/storage.service";
 import { setAuth } from "@/store/slices/auth.slice";
@@ -16,31 +15,64 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 
+// validators
+import { useToast } from "@/components/ui/ToastProvider";
+import { validateEmail, validatePassword } from "@/utils/validators";
+
 export default function Login() {
+  const toast = useToast();
   const dispatch = useDispatch();
   const loginMutation = useLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // 👁️ Toggle password visibility
   const [showPassword, setShowPassword] = useState(false);
 
+  // live errors
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+
   const onLogin = () => {
+    if (emailError || passwordError) {
+      toast.show("Please fix input errors", "error");
+      return;
+    }
+
     loginMutation.mutate(
       { email, password },
       {
+        onError: (err: any) => {
+          const msg = err?.response?.data?.message || "Login failed";
+          toast.show(msg, "error");
+        },
         onSuccess: async (res) => {
-          const { token, user } = res.data;
+          toast.show("Login successful", "success");
+          const { token, user } = res;
 
           dispatch(setAuth({ user, token }));
           await saveToken(token);
-
           router.replace("/(tabs)");
         },
       }
     );
   };
+
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+    if (!validateEmail(value)) setEmailError("Please enter a valid email.");
+    else setEmailError(null);
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    if (!validatePassword(value))
+      setPasswordError("Password must be at least 6 characters.");
+    else setPasswordError(null);
+  };
+
+  const isButtonDisabled =
+    !email || !password || emailError !== null || passwordError !== null;
 
   return (
     <View style={styles.container}>
@@ -48,30 +80,39 @@ export default function Login() {
         <Text style={styles.title}>Welcome Back</Text>
         <Text style={styles.subtitle}>Enter your credentials to continue</Text>
 
-        {/* Email */}
+        {/* EMAIL */}
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>Email</Text>
+
           <TextInput
-            style={styles.input}
+            style={[styles.input, emailError ? styles.inputError : null]}
             placeholder="you@example.com"
             placeholderTextColor="#888"
             value={email}
-            onChangeText={setEmail}
+            onChangeText={handleEmailChange}
+            autoCapitalize="none"
           />
+
+          {emailError && <Text style={styles.errorText}>{emailError}</Text>}
         </View>
 
-        {/* Password with Show/Hide */}
+        {/* PASSWORD */}
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>Password</Text>
 
-          <View style={styles.passwordContainer}>
+          <View
+            style={[
+              styles.passwordContainer,
+              passwordError ? styles.inputError : null,
+            ]}
+          >
             <TextInput
               style={styles.passwordInput}
               placeholder="••••••••"
               placeholderTextColor="#888"
               secureTextEntry={!showPassword}
               value={password}
-              onChangeText={setPassword}
+              onChangeText={handlePasswordChange}
             />
 
             <Pressable
@@ -85,13 +126,17 @@ export default function Login() {
               />
             </Pressable>
           </View>
+
+          {passwordError && (
+            <Text style={styles.errorText}>{passwordError}</Text>
+          )}
         </View>
 
-        {/* Login Button */}
+        {/* LOGIN BUTTON */}
         <Pressable
-          style={styles.button}
+          style={[styles.button, isButtonDisabled && { opacity: 0.5 }]}
           onPress={onLogin}
-          disabled={loginMutation.isPending}
+          disabled={isButtonDisabled || loginMutation.isPending}
         >
           {loginMutation.isPending ? (
             <ActivityIndicator color="#fff" />
@@ -100,7 +145,7 @@ export default function Login() {
           )}
         </Pressable>
 
-        {/* Register Link */}
+        {/* REGISTER LINK */}
         <Pressable
           onPress={() => router.push("/(auth)/register")}
           style={{ marginTop: 12 }}
@@ -115,9 +160,10 @@ export default function Login() {
   );
 }
 
-// --------------------------------------------------
-// ⚡ Add extra styles for password field
-// --------------------------------------------------
+/////////////////////////////////////////////////////////////////////
+// 🎨 Styles (unchanged except error highlights)
+/////////////////////////////////////////////////////////////////////
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -170,7 +216,16 @@ const styles = StyleSheet.create({
     color: "#111",
   },
 
-  // 👇 Password Field Styling
+  inputError: {
+    borderColor: "red",
+  },
+
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 4,
+  },
+
   passwordContainer: {
     flexDirection: "row",
     borderWidth: 1,

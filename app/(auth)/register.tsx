@@ -1,5 +1,6 @@
 // app/(auth)/register.tsx
 
+import { useToast } from "@/components/ui/ToastProvider";
 import { useRegister } from "@/hooks/useAuth";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -15,6 +16,7 @@ import {
 
 export default function Register() {
   const registerMutation = useRegister();
+  const toast = useToast();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -28,18 +30,27 @@ export default function Register() {
   const [error, setError] = useState("");
 
   const onRegister = () => {
-    setError("");
-
-    // Basic validation
+    // Clear previous toast messages
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      toast.show("Passwords do not match", "error");
+      return;
+    }
+
+    if (!name || !email || !password) {
+      toast.show("All fields are required", "error");
       return;
     }
 
     registerMutation.mutate(
       { name, email, password },
       {
+        onError: (error: any) => {
+          const msg =
+            error?.response?.data?.message || "Registration failed. Try again.";
+          toast.show(msg, "error");
+        },
         onSuccess: () => {
+          toast.show("Account created successfully!", "success");
           router.push("/(auth)/login");
         },
       }
