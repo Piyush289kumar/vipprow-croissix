@@ -1,5 +1,7 @@
 // components/ui/ToastProvider.tsx
+
 import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 import React, { createContext, useContext, useRef, useState } from "react";
 import {
   Animated,
@@ -21,19 +23,32 @@ interface ToastItem {
 
 export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   const [toast, setToast] = useState<ToastItem | null>(null);
-  const timeoutRef = useRef<any>(null);
+  const timeoutRef = useRef<number | null>(null);
 
-  const show = (
-    message: string,
-    type: "success" | "error" | "info" = "info"
-  ) => {
-    // Remove existing toast instantly before showing a new one
+  const triggerHaptic = (type: ToastItem["type"]) => {
+    switch (type) {
+      case "success":
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        break;
+      case "error":
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        break;
+      default:
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }
+  };
+
+  const show = (message: string, type: ToastItem["type"] = "info") => {
+    // 🚀 Add haptic here
+    triggerHaptic(type);
+
+    // Remove existing toast instantly
     hide(true);
 
     const fadeAnim = new Animated.Value(0);
     const slideAnim = new Animated.Value(-20);
 
-    const newToast = { message, type, fadeAnim, slideAnim };
+    const newToast: ToastItem = { message, type, fadeAnim, slideAnim };
     setToast(newToast);
 
     // Animate IN
@@ -51,23 +66,22 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
       }),
     ]).start();
 
-    // AUTO-HIDE after 3s (use the toast object itself to avoid stale closure)
+    // AUTO-HIDE after 3s
     timeoutRef.current = setTimeout(() => {
       hide(false, newToast);
     }, 3000);
   };
 
-  const hide = (instant = false, targetToast = toast) => {
+  const hide = (instant = false, targetToast: ToastItem | null = toast) => {
     if (!targetToast) return;
 
-    clearTimeout(timeoutRef.current);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     if (instant) {
       setToast(null);
       return;
     }
 
-    // Animate OUT
     Animated.parallel([
       Animated.timing(targetToast.fadeAnim, {
         toValue: 0,
@@ -80,14 +94,11 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
         useNativeDriver: true,
       }),
     ]).start(() => {
-      // Only clear if the current toast is the one animating out
-      setToast((current: ToastItem | null) =>
-        current === targetToast ? null : current
-      );
+      setToast((current) => (current === targetToast ? null : current));
     });
   };
 
-  const iconForType = (type: string) => {
+  const iconForType = (type: ToastItem["type"]) => {
     switch (type) {
       case "success":
         return <Ionicons name="checkmark-circle" size={22} color="#fff" />;
