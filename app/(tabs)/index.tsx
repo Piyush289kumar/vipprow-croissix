@@ -32,6 +32,18 @@ export default function HomeScreen() {
 
         <HelloWave />
       </ThemedView>
+
+
+      <ThemedView style={styles.titleContainer}>
+        <Button variant="solid" onPress={() => router.push("/(main)/courses")}>
+          <ButtonText>Courses</ButtonText>
+        </Button>
+
+        <HelloWave />
+      </ThemedView>
+
+
+
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>
