@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { View, Text, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import Logo from "@/assets/images/logo.svg";
 
 // BNA UI
 import { Button as BNAButton } from "@/components/ui/button";
@@ -27,13 +28,26 @@ export default function LoginPage() {
   return (
     <View className="flex-1">
       {/* Top 50% : Blue */}
-      <View className="flex-1 bg-blue-600 dark:bg-zinc-900" />
+      <View className="flex-1 !bg-[#2567E8] dark:bg-zinc-900" />
 
       {/* Bottom 50% : White */}
-      <View className="flex-1 bg-zinc-200/70 dark:bg-zinc-950" />
+      <View className="flex-1 bg-[#F6F8FA] dark:bg-zinc-950" />
+
+      {/* Heading inside blue section */}
+      <View className="absolute top-20 inset-x-0 items-center">
+        {/* SVG Logo */}
+        <Logo width={32} height={32} style={{ marginBottom: 20 }} />
+
+        <Text className="!text-white text-5xl font-bold text-center px-10 leading-tight mt-5">
+          Sign in to your Account
+        </Text>
+        <BNAText variant="caption" className="!text-white mt-8">
+          Enter your email and password to log in
+        </BNAText>
+      </View>
 
       {/* Floating card */}
-      <View className="absolute inset-0 -bottom-24 items-center justify-center px-6 min-w-lg max-w-lg mx-auto shadow-sm">
+      <View className="absolute inset-0 -bottom-40 items-center justify-center px-6 min-w-lg max-w-lg mx-auto shadow-sm shadow-zinc-200 dark:shadow-none">
         <View className="bg-white dark:bg-zinc-800 rounded-3xl">
           <Card
             style={{
