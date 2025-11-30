@@ -1,94 +1,135 @@
 // app/(auth)/login.tsx
 import React, { useState } from "react";
-import { View, Text } from "react-native";
-import { TextInput } from "react-native";
+import { View, Text, Pressable } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 
 // BNA UI
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Button as BNAButton } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Text as BNAText } from "@/components/ui/text";
 import { View as BNAView } from "@/components/ui/view";
-import { useColor } from "@/hooks/useColor";
+import { Input } from "@/components/ui/input";
+import { Checkbox as BNACheckbox } from "@/components/ui/checkbox";
+import { Lock, Mail } from "lucide-react-native";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const borderColor = useColor("border");
-  const backgroundColor = useColor("background");
-  const textColor = useColor("text");
+  const [checked, setChecked] = useState(false);
+
+  const emailError =
+    email && !email.includes("@") ? "Please enter a valid email address" : "";
+  const passwordError =
+    password && password.length < 6
+      ? "Password must be at least 6 characters"
+      : "";
 
   return (
     <View className="flex-1">
       {/* Top 50% : Blue */}
-      <View className="flex-1 bg-blue-600" />
+      <View className="flex-1 bg-blue-600 dark:bg-zinc-900" />
 
       {/* Bottom 50% : White */}
-      <View className="flex-1 bg-white" />
+      <View className="flex-1 bg-zinc-200/70 dark:bg-zinc-950" />
 
       {/* Floating card */}
-      <View className="absolute inset-0 items-center justify-center px-6 max-w-lg mx-auto">
-        <Card>
-          <CardHeader>
-            <CardTitle>Sign In</CardTitle>
-            <CardDescription>
-              Enter your credentials to access your account.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <View style={{ gap: 16 }}>
-              <View>
-                <Text style={{ marginBottom: 8, fontWeight: "500" }}>
-                  Email
+      <View className="absolute inset-0 -bottom-24 items-center justify-center px-6 min-w-lg max-w-lg mx-auto shadow-sm">
+        <View className="bg-white dark:bg-zinc-800 rounded-3xl">
+          <Card
+            style={{
+              backgroundColor: "transparent",
+            }}
+          >
+            <CardContent>
+              {/* Login With Google Button */}
+
+              <Pressable
+                className="
+                    flex-row items-center justify-center 
+                    bg-white dark:bg-zinc-900
+                    border border-zinc-300 dark:border-zinc-800
+                    h-14 rounded-3xl gap-3
+                    active:opacity-80 mx-1"
+              >
+                <AntDesign
+                  name="google"
+                  size={26}
+                  className="text-zinc-800 dark:!text-white"
+                />
+                <Text className="text-base text-zinc-700 dark:text-zinc-200 font-medium">
+                  Continue with Google
                 </Text>
-                <TextInput
+              </Pressable>
+
+              <View className="flex-row items-center my-6 px-2">
+                <View className="flex-1 h-px bg-gray-300 dark:bg-gray-700" />
+                <Text className="px-5 text-gray-500 dark:text-gray-400">
+                  Or login with
+                </Text>
+                <View className="flex-1 h-px bg-gray-300 dark:bg-gray-700" />
+              </View>
+
+              <BNAView style={{ gap: 16 }}>
+                <Input
+                  placeholder="Enter your email"
+                  icon={Mail}
                   value={email}
                   onChangeText={setEmail}
-                  placeholder="Enter your email"
-                  style={{
-                    borderWidth: 1,
-                    borderColor,
-                    borderRadius: 999,
-                    padding: 12,
-                    backgroundColor,
-                    color: textColor,
-                  }}
+                  error={emailError}
                   keyboardType="email-address"
-                  autoCapitalize="none"
                 />
-              </View>
-              <View>
-                <Text style={{ marginBottom: 8, fontWeight: "500" }}>
-                  Password
-                </Text>
-                <TextInput
+                <Input
+                  placeholder="Enter password"
+                  icon={Lock}
                   value={password}
                   onChangeText={setPassword}
-                  placeholder="Enter your password"
+                  error={passwordError}
                   secureTextEntry
-                  style={{
-                    borderWidth: 1,
-                    borderColor,
-                    borderRadius: 999,
-                    padding: 12,
-                    backgroundColor,
-                    color: textColor,
-                  }}
                 />
-              </View>
-            </View>
-          </CardContent>
-          <CardFooter>
-            <Button variant="outline">Cancel</Button>
-            <Button>Sign In</Button>
-          </CardFooter>
-        </Card>
+
+                <View className="flex-row items-center justify-between mt-3">
+                  <BNACheckbox
+                    checked={checked}
+                    onCheckedChange={setChecked}
+                    label="Remember Me"
+                  />
+
+                  <BNAText variant="link" style={{ color: "#4D81E7" }}>
+                    Forget Password?
+                  </BNAText>
+                </View>
+              </BNAView>
+            </CardContent>
+
+            <BNAView
+              style={{
+                flex: 1,
+                gap: 16,
+                marginTop: 20,
+                marginBottom: 50,
+                justifyContent: "center",
+              }}
+            >
+              <BNAButton variant="default" size="sm">
+                Sign In
+              </BNAButton>
+            </BNAView>
+
+            <BNAView
+              style={{
+                marginTop: 16,
+                flexDirection: "row",
+                justifyContent: "center",
+                gap: 6,
+              }}
+            >
+              <BNAText variant="caption">Don’t have an account?</BNAText>
+              <BNAText variant="link" style={{ color: "#4D81E7" }}>
+                Sign Out
+              </BNAText>
+            </BNAView>
+          </Card>
+        </View>
       </View>
     </View>
   );
