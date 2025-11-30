@@ -47,23 +47,21 @@ export default function LoginPage() {
     translateY.value = withTiming(-20, { duration: 6000 });
   }, []);
 
-  const bgAnim = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
-  }));
-
   return (
     <View className="flex-1">
-      {/* Top Section with Animated Background */}
+      {/* Top 50% with SVG background */}
       <View style={{ flex: 1 }}>
-        <Animated.View style={[styles.bgContainer, bgAnim]}>
+        {/* Background Image Layer */}
+        <View
+          style={styles.bgContainer}
+          className="bg-[#2567E8] dark:bg-zinc-900/90"
+        >
           <StartBg
             width="100%"
             height="100%"
             preserveAspectRatio="xMidYMid slice"
           />
-        </Animated.View>
-
-        <View className="absolute inset-0 bg-[#2567E8]/80 dark:bg-zinc-900/90" />
+        </View>
       </View>
 
       {/* Bottom white section */}
