@@ -20,6 +20,10 @@ import { View as BNAView } from "@/components/ui/view";
 import { Input } from "@/components/ui/input";
 import { Checkbox as BNACheckbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react-native";
+
+import { useDispatch } from "react-redux";
+// import { handleLogin } from "@/services/(auth)/login.service";
+
 // Reanimated
 import Animated, {
   FadeIn,
@@ -30,8 +34,14 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
+import { useToast } from "@/components/ui/toast";
 import { useRouter } from "expo-router";
+import { handleLogin } from "@/services/(auth)/login.service";
+
 export default function LoginPage() {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,6 +58,40 @@ export default function LoginPage() {
   useEffect(() => {
     translateY.value = withTiming(-20, { duration: 6000 });
   }, []);
+
+  async function onLogin() {
+    if (!email.trim().toLowerCase() || !password.trim()) {
+      toast({
+        title: "Validation Error",
+        description: "Email & Password required",
+        variant: "error",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    const response = await handleLogin(email, password, dispatch);
+
+    setLoading(false);
+
+    if (response.success) {
+      toast({
+        title: "Welcome 🎉",
+        description: "Login Successful",
+        variant: "success",
+      });
+
+      router.replace("/(tabs)/(home)"); // redirect inside app
+    } else {
+      toast({
+        title: "Login Failed",
+        description: response.message,
+        variant: "error",
+      });
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="flex-1">
@@ -172,6 +216,8 @@ export default function LoginPage() {
                   size="sm"
                   style={{ backgroundColor: "#2567E8" }}
                   textStyle={{ color: "white" }}
+                  loading={loading}
+                  onPress={onLogin}
                 >
                   Log In
                 </BNAButton>

@@ -15,6 +15,9 @@ import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 import "../global.css";
+import { Provider } from "react-redux";
+import { store } from "@/store";
+import { ToastProvider } from "@/components/ui/toast";
 
 SplashScreen.setOptions({
   duration: 200,
@@ -41,53 +44,60 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider>
-        <StatusBar style={colorScheme === "dark" ? "light" : "dark"} animated />
+      <Provider store={store}>
+        <ToastProvider>
+          <ThemeProvider>
+            <StatusBar
+              style={colorScheme === "dark" ? "light" : "dark"}
+              animated
+            />
 
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
-          <Stack.Screen
-            name="sheet"
-            options={{
-              headerShown: false,
-              sheetGrabberVisible: true,
-              sheetAllowedDetents: [0.4, 0.7, 1],
-              contentStyle: {
-                backgroundColor: isLiquidGlassAvailable()
-                  ? "transparent"
-                  : colorScheme === "dark"
-                    ? Colors.dark.card
-                    : Colors.light.card,
-              },
-              headerTransparent: Platform.OS === "ios" ? true : false,
-              headerLargeTitle: false,
-              title: "",
-              presentation:
-                Platform.OS === "ios"
-                  ? isLiquidGlassAvailable() && osName !== "iPadOS"
-                    ? "formSheet"
-                    : "modal"
-                  : "modal",
-              sheetInitialDetentIndex: 0,
-              headerStyle: {
-                backgroundColor:
-                  Platform.OS === "ios"
-                    ? "transparent"
+              <Stack.Screen
+                name="sheet"
+                options={{
+                  headerShown: false,
+                  sheetGrabberVisible: true,
+                  sheetAllowedDetents: [0.4, 0.7, 1],
+                  contentStyle: {
+                    backgroundColor: isLiquidGlassAvailable()
+                      ? "transparent"
+                      : colorScheme === "dark"
+                        ? Colors.dark.card
+                        : Colors.light.card,
+                  },
+                  headerTransparent: Platform.OS === "ios" ? true : false,
+                  headerLargeTitle: false,
+                  title: "",
+                  presentation:
+                    Platform.OS === "ios"
+                      ? isLiquidGlassAvailable() && osName !== "iPadOS"
+                        ? "formSheet"
+                        : "modal"
+                      : "modal",
+                  sheetInitialDetentIndex: 0,
+                  headerStyle: {
+                    backgroundColor:
+                      Platform.OS === "ios"
+                        ? "transparent"
+                        : colorScheme === "dark"
+                          ? Colors.dark.card
+                          : Colors.light.card,
+                  },
+                  headerBlurEffect: isLiquidGlassAvailable()
+                    ? undefined
                     : colorScheme === "dark"
-                      ? Colors.dark.card
-                      : Colors.light.card,
-              },
-              headerBlurEffect: isLiquidGlassAvailable()
-                ? undefined
-                : colorScheme === "dark"
-                  ? "dark"
-                  : "light",
-            }}
-          />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </ThemeProvider>
+                      ? "dark"
+                      : "light",
+                }}
+              />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </ThemeProvider>
+        </ToastProvider>
+      </Provider>
     </GestureHandlerRootView>
   );
 }

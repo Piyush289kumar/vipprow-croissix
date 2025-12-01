@@ -8,10 +8,12 @@ import {
   RegisterResponse,
 } from "@/types/auth";
 
-export const loginApi = (data: LoginPayload) =>
-  API.post<LoginResponse>("/auth/login", data);
+export const loginApi = (data: LoginPayload) => {
+  return API.post<LoginResponse>("/auth/login", data);
+};
 
-export const registerApi = (data: RegisterPayload) =>
-  API.post<RegisterResponse>("/auth/register", data);
+export const registerApi = (data: RegisterPayload) => {
+  return API.post<RegisterResponse>("/auth/register", data);
+};
 
 export const logoutApi = () => API.post("/auth/logout");
