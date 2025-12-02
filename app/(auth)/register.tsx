@@ -31,12 +31,20 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useRouter } from "expo-router";
+import { useToast } from "@/components/ui/toast";
+import { handleRegister } from "@/services/(auth)/register.service";
+import { useDispatch } from "react-redux";
+
 export default function RegisterPage() {
+  const { toast } = useToast();
+  const dispatch = useDispatch();
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checked, setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
   const emailError =
     email && !email.includes("@") ? "Please enter a valid email address" : "";
   const passwordError =
@@ -53,6 +61,39 @@ export default function RegisterPage() {
   useEffect(() => {
     translateY.value = withTiming(-20, { duration: 6000 });
   }, []);
+
+  // Inside onPress
+  async function onRegister() {
+    console.log("Press : onRegister");
+
+    if (!fullName || !email || !password) {
+      toast({
+        title: "Error",
+        description: "All fields required",
+        variant: "error",
+      });
+      return;
+    }
+
+    const res = await handleRegister(fullName, email, password, dispatch);
+
+    if (res.success) {
+      toast({
+        title: "Success",
+        description: res.message,
+        variant: "success",
+      });
+
+      router.replace("/(tabs)/(home)");
+    } else {
+      toast({
+        title: "Failed",
+        description: res.message,
+        variant: "error",
+      });
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="flex-1">
@@ -163,6 +204,7 @@ export default function RegisterPage() {
                   size="sm"
                   style={{ backgroundColor: "#2567E8" }}
                   textStyle={{ color: "white" }}
+                  onPress={onRegister}
                 >
                   Log In
                 </BNAButton>

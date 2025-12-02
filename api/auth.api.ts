@@ -16,4 +16,6 @@ export const registerApi = (data: RegisterPayload) => {
   return API.post<RegisterResponse>("/auth/register", data);
 };
 
-export const logoutApi = () => API.post("/auth/logout");
+export const logoutApi = () => {
+  return API.post("/auth/logout");
+}

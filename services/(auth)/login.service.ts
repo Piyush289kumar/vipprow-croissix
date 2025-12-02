@@ -16,13 +16,7 @@ export async function handleLogin(
       password: password.trim(),
     };
 
-    console.log("🚀 Payload Sent:", payload);
-
     const response = await loginApi(payload);
-
-    console.log("🚀 Response :", response);
-
-    console.log("🔥 Login API success:", response.data);
 
     const data = response.data;
 
@@ -39,8 +33,6 @@ export async function handleLogin(
 
     return { success: true, message: data.message };
   } catch (error: any) {
-    console.log("❌ Login API Error:", error.response?.data);
-
     return {
       success: false,
       message:
