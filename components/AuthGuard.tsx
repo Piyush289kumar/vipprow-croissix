@@ -1,19 +1,19 @@
 // components/AuthGuard.tsx
 
 // components/AuthGuard.tsx
-
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { useSelector } from "react-redux";
 import { RootState, store } from "@/store";
 import { clearToken, getToken, decodeToken } from "@/services/auth.util";
-import { useRouter, useSegments } from "expo-router";
+import { useRouter, useSegments, useRootNavigationState } from "expo-router";
 import { logout as logoutAction } from "@/store/slices/auth.slice";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const segments = useSegments();
+  const navigationState = useRootNavigationState();
 
   const [checking, setChecking] = useState(true);
 
@@ -21,70 +21,45 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     let mounted = true;
 
     async function verify() {
-      if (!mounted) return;
-
-      // Wait until router knows where we are
-      if (segments.length === 0) return;
+      // ⛔ Don’t run until router is hydrated
+      if (!navigationState?.key) return;
 
       const current = segments.join("/") || "";
-      console.log("🚦 Segments:", segments);
-      console.log("🧭 Current Route:", current);
+      console.log("🚦 Segments", segments);
+      console.log("🧭 Current", current);
 
       const token = await getToken();
-      console.log("🔑 Token from storage:", token);
 
-      // -----------------------------------------
-      // 1. NO TOKEN → only protect non-auth routes
-      // -----------------------------------------
+      // ------------------ CASE 1: NO TOKEN -------------------
       if (!token) {
-        console.log("🙅‍♂️ No token found");
+        const inAuth = current.startsWith("(auth)");
+        if (!inAuth) router.replace("/(auth)/login");
 
-        const isAuthRoute = current.startsWith("(auth)");
-
-        if (!isAuthRoute) {
-          console.log("➡️ Redirect to /login (no token)");
-          router.replace("/(auth)/login");
-        }
-
-        if (mounted) setChecking(false);
+        mounted && setChecking(false);
         return;
       }
 
-      // -----------------------------------------
-      // 2. TOKEN EXISTS → validate expiry
-      // -----------------------------------------
+      // ---------------- CASE 2: TOKEN EXISTS ------------------
       const decoded: any = decodeToken(token);
-      console.log("📜 Decoded Token:", decoded);
-
-      const expired =
-        !decoded || !decoded.exp || decoded.exp * 1000 < Date.now();
-      console.log("⏰ Expired:", expired);
+      const expired = !decoded || decoded.exp * 1000 < Date.now();
 
       if (expired) {
-        console.log("❌ Token expired → clearing & redirecting");
-
         await clearToken();
         store.dispatch(logoutAction());
 
-        const isAuthRoute = current.startsWith("(auth)");
-        if (!isAuthRoute) {
-          router.replace("/(auth)/login");
-        }
+        const inAuth = current.startsWith("(auth)");
+        if (!inAuth) router.replace("/(auth)/login");
 
-        if (mounted) setChecking(false);
+        mounted && setChecking(false);
         return;
       }
 
-      // -----------------------------------------
-      // 3. LOGGED IN user trying to access auth routes
-      // -----------------------------------------
-      const isAuthRoute = current.startsWith("(auth)");
-      if (isAuthRoute) {
-        console.log("✅ Logged in but in auth route → redirect /home");
+      // --------- CASE 3: LOGGED IN BUT IN AUTH ROUTE ---------
+      if (current.startsWith("(auth)")) {
         router.replace("/(tabs)/(home)");
       }
 
-      if (mounted) setChecking(false);
+      mounted && setChecking(false);
     }
 
     verify();
@@ -92,7 +67,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     return () => {
       mounted = false;
     };
-  }, [segments, isAuthenticated]);
+  }, [segments, isAuthenticated, navigationState]);
 
   if (checking) {
     return (

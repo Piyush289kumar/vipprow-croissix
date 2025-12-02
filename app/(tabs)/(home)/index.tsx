@@ -7,6 +7,7 @@ import { View } from "@/components/ui/view";
 import { useColor } from "@/hooks/useColor";
 import { Terminal } from "lucide-react-native";
 import "@/global.css";
+import { logout } from "@/services/auth.service";
 
 export default function HomeScreen() {
   const green = useColor("green");
@@ -21,9 +22,7 @@ export default function HomeScreen() {
         justifyContent: "center",
       }}
     >
-      <Text variant="title">
-        Welcome back 👋
-      </Text>
+      <Text variant="title">Welcome back 👋</Text>
 
       <Text
         variant="heading"
@@ -91,6 +90,15 @@ export default function HomeScreen() {
             Add components with a single command
           </Text>
         </Card>
+
+        <Button
+          variant="destructive"
+          onPress={() => {
+            logout();
+          }}
+        >
+          Log Out
+        </Button>
       </View>
 
       <Link asChild href="/sheet">
