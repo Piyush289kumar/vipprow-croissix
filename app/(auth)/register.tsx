@@ -64,8 +64,6 @@ export default function RegisterPage() {
 
   // Inside onPress
   async function onRegister() {
-    console.log("Press : onRegister");
-
     if (!fullName || !email || !password) {
       toast({
         title: "Error",

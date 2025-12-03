@@ -25,8 +25,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       if (!navigationState?.key) return;
 
       const current = segments.join("/") || "";
-      console.log("🚦 Segments", segments);
-      console.log("🧭 Current", current);
 
       const token = await getToken();
 

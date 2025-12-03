@@ -36,7 +36,6 @@ API.interceptors.response.use(
 
     // Token invalid or expired -> auto logout
     if (status === 401 || status === 403) {
-      console.log("Token expired or invalid - logging out...");
       await clearToken();
       store.dispatch(logout());
     }

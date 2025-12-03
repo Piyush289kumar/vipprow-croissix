@@ -53,12 +53,8 @@ export function decodeToken(token: string | null) {
 
     const decoded = JSON.parse(jsonPayload);
 
-    // Optional debug
-    console.log("📜 Decoded Token:", decoded);
-
     return decoded;
   } catch (e) {
-    console.log("❌ Failed to decode token:", e);
     return null;
   }
 }
