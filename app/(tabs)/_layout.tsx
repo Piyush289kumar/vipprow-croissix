@@ -2,7 +2,6 @@
 
 import { Platform } from "react-native";
 import { useColor } from "@/hooks/useColor";
-import { isLiquidGlassAvailable } from "expo-glass-effect";
 import MaterialIcons from "@expo/vector-icons/Feather";
 import {
   Badge,
@@ -42,38 +41,46 @@ export default function TabsLayout() {
         <Label>Home</Label>
       </NativeTabs.Trigger>
 
+      <NativeTabs.Trigger name="(post)">
+        {Platform.select({
+          ios: <Icon sf="square.3.layers.3d.down.forward" />,
+          android: (
+            <Icon src={<VectorIcon family={MaterialIcons} name="power" />} />
+          ),
+        })}
+        <Label>Posts</Label>
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="(insides)">
+        {Platform.select({
+          ios: <Icon sf="chart.xyaxis.line" />,
+          android: (
+            <Icon src={<VectorIcon family={MaterialIcons} name="power" />} />
+          ),
+        })}
+        <Badge>9+</Badge>
+        <Label>Insides</Label>
+      </NativeTabs.Trigger>
+
       <NativeTabs.Trigger name="settings">
         {Platform.select({
-          ios: <Icon sf="gear" />,
+          ios: <Icon sf="book.pages" />,
           android: (
             <Icon src={<VectorIcon family={MaterialIcons} name="settings" />} />
           ),
         })}
-        <Label>Settings</Label>
+        <Label>Docs</Label>
         <Badge>1</Badge>
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="login">
+      <NativeTabs.Trigger name="(profile)">
         {Platform.select({
           ios: <Icon sf="person.crop.circle" />,
           android: (
             <Icon src={<VectorIcon family={MaterialIcons} name="power" />} />
           ),
         })}
-        <Label>Login</Label>
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger
-        name="search"
-        role={isLiquidGlassAvailable() ? "search" : undefined}
-      >
-        {Platform.select({
-          ios: <Icon sf="magnifyingglass" />,
-          android: (
-            <Icon src={<VectorIcon family={MaterialIcons} name="search" />} />
-          ),
-        })}
-        <Label>Search</Label>
+        <Label>Profile</Label>
       </NativeTabs.Trigger>
     </NativeTabs>
   );
