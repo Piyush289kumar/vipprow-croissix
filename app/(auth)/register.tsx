@@ -138,7 +138,7 @@ export default function RegisterPage() {
           className="absolute inset-0 -bottom-40 items-center justify-center px-6 min-w-lg max-w-lg mx-auto"
         >
           <View className="bg-white dark:bg-zinc-800 rounded-3xl shadow-md dark:shadow-none">
-            <Card style={{ backgroundColor: "transparent" }}>
+            <Card style={{ backgroundColor: "white" }}>
               <CardContent>
                 {/* INPUTS */}
                 <BNAView style={{ gap: 16 }}>
