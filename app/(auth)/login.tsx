@@ -100,7 +100,7 @@ export default function LoginPage() {
           {/* Background Image Layer */}
           <View
             style={styles.bgContainer}
-            className="bg-[#2567E8] dark:bg-zinc-900/90"
+            className="bg-[#003f88] dark:bg-zinc-900/90"
           >
             <StartBg
               width="100%"
@@ -138,7 +138,7 @@ export default function LoginPage() {
           className="absolute inset-0 -bottom-40 items-center justify-center px-6 min-w-lg max-w-lg mx-auto"
         >
           <View className="bg-white dark:bg-zinc-800 rounded-3xl shadow-md dark:shadow-none">
-            <Card style={{ backgroundColor: "white" }}>
+            <Card style={{ backgroundColor: "transparent" }}>
               <CardContent>
                 {/* GOOGLE LOGIN BUTTON */}
                 <Pressable
@@ -195,7 +195,7 @@ export default function LoginPage() {
                       onCheckedChange={setChecked}
                       label="Remember Me"
                     />
-                    <BNAText variant="link" style={{ color: "#4D81E7" }}>
+                    <BNAText variant="link" style={{ color: "#003f88" }}>
                       Forget Password?
                     </BNAText>
                   </View>
@@ -214,7 +214,7 @@ export default function LoginPage() {
                 <BNAButton
                   variant="ghost"
                   size="sm"
-                  style={{ backgroundColor: "#2567E8" }}
+                  style={{ backgroundColor: "#003f88" }}
                   textStyle={{ color: "white" }}
                   loading={loading}
                   onPress={onLogin}
@@ -234,7 +234,7 @@ export default function LoginPage() {
                 <BNAText variant="caption">Don’t have an account?</BNAText>
                 <BNAText
                   variant="link"
-                  style={{ color: "#4D81E7" }}
+                  style={{ color: "#003f88" }}
                   onPress={() => router.push("/(auth)/register")}
                 >
                   Sign Up

@@ -100,7 +100,7 @@ export default function RegisterPage() {
           {/* Background Image Layer */}
           <View
             style={styles.bgContainer}
-            className="bg-[#2567E8] dark:bg-zinc-900/90"
+            className="bg-[#003f88] dark:bg-zinc-900/90"
           >
             <StartBg
               width="100%"
@@ -181,7 +181,7 @@ export default function RegisterPage() {
                       onCheckedChange={setChecked}
                       label="Terms and Conditions"
                     />
-                    <BNAText variant="link" style={{ color: "#4D81E7" }}>
+                    <BNAText variant="link" style={{ color: "#003f88" }}>
                       Read Policy
                     </BNAText>
                   </View>
@@ -200,7 +200,7 @@ export default function RegisterPage() {
                 <BNAButton
                   variant="ghost"
                   size="sm"
-                  style={{ backgroundColor: "#2567E8" }}
+                  style={{ backgroundColor: "#003f88" }}
                   textStyle={{ color: "white" }}
                   onPress={onRegister}
                 >
@@ -241,7 +241,7 @@ export default function RegisterPage() {
                 <BNAText variant="caption"> Already have an account?</BNAText>
                 <BNAText
                   variant="link"
-                  style={{ color: "#4D81E7" }}
+                  style={{ color: "#003f88" }}
                   onPress={() => router.push("/(auth)/login")}
                 >
                   Log In

@@ -64,7 +64,7 @@ export default function LoginProxy() {
 //         {/* Background Image Layer */}
 //         <View
 //           style={styles.bgContainer}
-//           className="bg-[#2567E8] dark:bg-zinc-900/90"
+//           className="bg-[#003f88] dark:bg-zinc-900/90"
 //         >
 //           <StartBg
 //             width="100%"
@@ -159,7 +159,7 @@ export default function LoginProxy() {
 //                     label="Remember Me"
 //                   />
 
-//                   <BNAText variant="link" style={{ color: "#4D81E7" }}>
+//                   <BNAText variant="link" style={{ color: "#003f88" }}>
 //                     Forget Password?
 //                   </BNAText>
 //                 </View>
@@ -179,7 +179,7 @@ export default function LoginProxy() {
 //               <BNAButton
 //                 variant="ghost"
 //                 size="sm"
-//                 style={{ backgroundColor: "#2567E8" }}
+//                 style={{ backgroundColor: "#003f88" }}
 //                 textStyle={{ color: "white" }}
 //               >
 //                 Sign In
@@ -196,7 +196,7 @@ export default function LoginProxy() {
 //               }}
 //             >
 //               <BNAText variant="caption">Don’t have an account?</BNAText>
-//               <BNAText variant="link" style={{ color: "#4D81E7" }}>
+//               <BNAText variant="link" style={{ color: "#003f88" }}>
 //                 Sign Up
 //               </BNAText>
 //             </BNAView>
