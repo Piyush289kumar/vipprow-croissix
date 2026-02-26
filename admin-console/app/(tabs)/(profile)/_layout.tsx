@@ -5,11 +5,8 @@ import { Platform, useColorScheme } from "react-native";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { useColor } from "@/hooks/useColor";
 import { Text } from "@/components/ui/text";
-import { useState } from "react";
 
 export default function ProfileLayout() {
-  const [facebookConnected, setFacebookConnected] = useState<boolean>(true);
-  const [instagramConnected, setInstagramConnected] = useState<boolean>(false);
   const theme = useColorScheme();
   const text = useColor("text");
   const background = useColor("background");
@@ -17,7 +14,7 @@ export default function ProfileLayout() {
   return (
     <Stack
       screenOptions={{
-        headerLargeTitle: true,
+        headerLargeTitle: false,
         headerLargeTitleShadowVisible: false,
         headerTransparent: true,
         headerTintColor: text,

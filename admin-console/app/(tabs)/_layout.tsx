@@ -38,7 +38,7 @@ export default function TabsLayout() {
             <Icon src={<VectorIcon family={MaterialIcons} name="home" />} />
           ),
         })}
-        <Label>Home</Label>
+        <Label>Dashboard</Label>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="(post)">
