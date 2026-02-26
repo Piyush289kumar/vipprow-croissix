@@ -1,109 +1,77 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Icon } from "@/components/ui/icon";
-import { Link } from "@/components/ui/link";
-import { Text } from "@/components/ui/text";
 import { View } from "@/components/ui/view";
-import { useColor } from "@/hooks/useColor";
-import { Terminal } from "lucide-react-native";
+import { ScrollView } from "@/components/ui/scroll-view";
 import "@/global.css";
-import { logout } from "@/services/auth.service";
+import { ImageSlider } from "@/components/custom-ui/image-slider";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Text } from "@/components/ui/text";
 
 export default function HomeScreen() {
-  const green = useColor("green");
-  const muted = useColor("muted");
-
   return (
-    <View
-      style={{
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={{
         flex: 1,
-        gap: 16,
-        padding: 24,
-        justifyContent: "center",
+        gap: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        alignItems: "center",
       }}
     >
-      <Text variant="title">Welcome back 👋</Text>
-
-      <Text
-        variant="heading"
-        style={{
-          textAlign: "center",
-        }}
-      >
-        Built with ❤️ by BNA
-      </Text>
-
       <View
         style={{
-          marginBottom: 20,
+          marginTop: 70,
         }}
       >
-        <Card>
-          <View
-            style={{
-              gap: 8,
-              marginBottom: 16,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Icon name={Terminal} />
+        <ImageSlider />
 
-            <Text
-              variant="body"
-              style={{
-                fontWeight: "600",
-              }}
-            >
-              Add Components
-            </Text>
-          </View>
-          <View
-            style={{
-              backgroundColor: muted,
-              paddingHorizontal: 16,
-              paddingVertical: 12,
-              borderRadius: 8,
-              marginBottom: 16,
-              minWidth: "100%",
-            }}
-          >
-            <Text
-              variant="caption"
-              style={{
-                color: green,
-                fontFamily: "monospace",
-                fontSize: 16,
-                textAlign: "center",
-              }}
-            >
-              npx bna-ui add avatar
-            </Text>
-          </View>
-          <Text
-            variant="caption"
-            style={{
-              textAlign: "center",
-              opacity: 0.7,
-            }}
-          >
-            Add components with a single command
-          </Text>
-        </Card>
-
-        <Button
-          variant="destructive"
-          onPress={() => {
-            logout();
-          }}
-        >
-          Log Out
-        </Button>
+        <Tabs defaultValue="available" style={{marginTop:50}}>
+          <TabsList>
+            <TabsTrigger value="available">Google</TabsTrigger>
+            <TabsTrigger value="premium" disabled>
+              Instagram
+            </TabsTrigger>
+            <TabsTrigger value="enterprise" disabled>
+              Facebook
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="available">
+            <View style={{ padding: 16 }}>
+              <Text variant="title" style={{ marginBottom: 8 }}>
+                Available Features
+              </Text>
+              <Text variant="body">
+                These features are currently available to you.
+              </Text>
+            </View>
+          </TabsContent>
+          <TabsContent value="pending">
+            <View style={{ padding: 16 }}>
+              <Text variant="title" style={{ marginBottom: 8 }}>
+                Pending Features
+              </Text>
+              <Text variant="body">
+                These features are being processed and will be available soon.
+              </Text>
+            </View>
+          </TabsContent>
+          <TabsContent value="premium">
+            <View style={{ padding: 16 }}>
+              <Text variant="title" style={{ marginBottom: 8 }}>
+                Premium Features
+              </Text>
+              <Text variant="body">Upgrade to access premium features.</Text>
+            </View>
+          </TabsContent>
+          <TabsContent value="enterprise">
+            <View style={{ padding: 16 }}>
+              <Text variant="title" style={{ marginBottom: 8 }}>
+                Enterprise Features
+              </Text>
+              <Text variant="body">Contact sales for enterprise features.</Text>
+            </View>
+          </TabsContent>
+        </Tabs>
       </View>
-
-      <Link asChild href="/sheet">
-        <Button>Open Components Sheet</Button>
-      </Link>
-    </View>
+    </ScrollView>
   );
 }
