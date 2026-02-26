@@ -8,4 +8,6 @@ export const MARGIN_HORIZONTAL = 8;
 
 
 /* Theme Color */
-export const PRIMARY_COLOR = "#FFF";
+export const BG_COLOR = "#EAEFEF";
+export const PRIMARY_COLOR = "#003f88";
+export const CARD_COLOR = "#FFF";

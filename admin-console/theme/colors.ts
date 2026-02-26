@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import { BG_COLOR } from './globals';
 
 export const Fonts = Platform.select({
   ios: {
@@ -28,7 +29,7 @@ export const Fonts = Platform.select({
 
 export const lightColors = {
   // Base colors
-  background: '#FFFFFF',
+  background: BG_COLOR,
   foreground: '#000000',
 
   // Card colors
