@@ -4,6 +4,7 @@ import "@/global.css";
 import { ImageSlider } from "@/components/custom-ui/image-slider";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Text } from "@/components/ui/text";
+import { ProfileHealth } from "@/components/custom-ui/profile-health";
 
 export default function HomeScreen() {
   return (
@@ -19,12 +20,12 @@ export default function HomeScreen() {
     >
       <View
         style={{
-          marginTop: 70,
+          marginTop: 0,
         }}
       >
         <ImageSlider />
 
-        <Tabs defaultValue="available" style={{marginTop:50}}>
+        {/* <Tabs defaultValue="available" style={{marginTop:50}}>
           <TabsList>
             <TabsTrigger value="available">Google</TabsTrigger>
             <TabsTrigger value="premium" disabled>
@@ -70,7 +71,9 @@ export default function HomeScreen() {
               <Text variant="body">Contact sales for enterprise features.</Text>
             </View>
           </TabsContent>
-        </Tabs>
+        </Tabs> */}
+
+          <ProfileHealth />
       </View>
     </ScrollView>
   );
