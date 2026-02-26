@@ -5,8 +5,12 @@ import { ImageSlider } from "@/components/custom-ui/image-slider";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Text } from "@/components/ui/text";
 import { ProfileHealth } from "@/components/custom-ui/profile-health";
+import { DatePicker, DateRange } from "@/components/ui/date-picker";
+import React, { useState } from "react";
+import { RecentPosts } from "@/components/custom-ui/recent-posts";
 
 export default function HomeScreen() {
+  const [selectedRange, setSelectedRange] = useState<DateRange | undefined>();
   return (
     <ScrollView
       style={{ flex: 1 }}
@@ -72,8 +76,21 @@ export default function HomeScreen() {
             </View>
           </TabsContent>
         </Tabs> */}
+      </View>
 
-          <ProfileHealth />
+      <ProfileHealth />
+
+      <View>
+        <DatePicker
+          mode="range"
+          label="Select Range"
+          value={selectedRange}
+          onChange={setSelectedRange}
+          placeholder="Choose a range"
+        />
+      </View>
+      <View style={{ width: "100%" }}>
+        <RecentPosts />
       </View>
     </ScrollView>
   );

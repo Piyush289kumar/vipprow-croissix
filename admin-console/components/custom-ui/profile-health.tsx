@@ -17,6 +17,7 @@ export function ProfileHealth() {
       description='Quarterly performance metrics by department'
     >
       <RadialBarChart
+      style={{width:"100vw"}}
         data={sampleData}
         config={{
           animated: true,
