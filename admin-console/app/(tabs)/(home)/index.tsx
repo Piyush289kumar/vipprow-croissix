@@ -8,6 +8,7 @@ import { ProfileHealth } from "@/components/custom-ui/profile-health";
 import { DatePicker, DateRange } from "@/components/ui/date-picker";
 import React, { useState } from "react";
 import { RecentPosts } from "@/components/custom-ui/recent-posts";
+import { AppFooter } from "@/components/custom-ui/AppFooter";
 
 export default function HomeScreen() {
   const [selectedRange, setSelectedRange] = useState<DateRange | undefined>();
@@ -15,12 +16,11 @@ export default function HomeScreen() {
     <ScrollView
       style={{ flex: 1 }}
       contentContainerStyle={{
-        flex: 1,
-        gap: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        alignItems: "center",
+        gap: 16,
+        paddingHorizontal: 10,
+        paddingBottom: 0, // important for bottom safe area
       }}
+      showsVerticalScrollIndicator={false}
     >
       <View
         style={{
@@ -28,57 +28,11 @@ export default function HomeScreen() {
         }}
       >
         <ImageSlider />
-
-        {/* <Tabs defaultValue="available" style={{marginTop:50}}>
-          <TabsList>
-            <TabsTrigger value="available">Google</TabsTrigger>
-            <TabsTrigger value="premium" disabled>
-              Instagram
-            </TabsTrigger>
-            <TabsTrigger value="enterprise" disabled>
-              Facebook
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="available">
-            <View style={{ padding: 16 }}>
-              <Text variant="title" style={{ marginBottom: 8 }}>
-                Available Features
-              </Text>
-              <Text variant="body">
-                These features are currently available to you.
-              </Text>
-            </View>
-          </TabsContent>
-          <TabsContent value="pending">
-            <View style={{ padding: 16 }}>
-              <Text variant="title" style={{ marginBottom: 8 }}>
-                Pending Features
-              </Text>
-              <Text variant="body">
-                These features are being processed and will be available soon.
-              </Text>
-            </View>
-          </TabsContent>
-          <TabsContent value="premium">
-            <View style={{ padding: 16 }}>
-              <Text variant="title" style={{ marginBottom: 8 }}>
-                Premium Features
-              </Text>
-              <Text variant="body">Upgrade to access premium features.</Text>
-            </View>
-          </TabsContent>
-          <TabsContent value="enterprise">
-            <View style={{ padding: 16 }}>
-              <Text variant="title" style={{ marginBottom: 8 }}>
-                Enterprise Features
-              </Text>
-              <Text variant="body">Contact sales for enterprise features.</Text>
-            </View>
-          </TabsContent>
-        </Tabs> */}
       </View>
 
-      <ProfileHealth />
+      <View>
+        <ProfileHealth />
+      </View>
 
       <View>
         <DatePicker
@@ -89,9 +43,12 @@ export default function HomeScreen() {
           placeholder="Choose a range"
         />
       </View>
+
       <View style={{ width: "100%" }}>
         <RecentPosts />
       </View>
+
+      <AppFooter />
     </ScrollView>
   );
 }
