@@ -12,7 +12,7 @@ export default function ProfileLayout() {
   return (
     <Stack
       screenOptions={{
-        headerLargeTitle: true,
+        headerLargeTitle: false,
         headerLargeTitleShadowVisible: false,
         headerTransparent: true,
         headerTintColor: text,
@@ -31,10 +31,10 @@ export default function ProfileLayout() {
       <Stack.Screen
         name='index'
         options={{
-          title: 'Profile',
+          title: 'Posts',
           headerTitle: () =>
             Platform.OS === 'android' ? (
-              <Text variant='heading'>Profile</Text>
+              <Text variant='heading'>Posts</Text>
             ) : undefined,
         }}
       />
